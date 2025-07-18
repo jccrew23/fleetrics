@@ -54,7 +54,7 @@ useEffect(() => {
     api
       .get("/api/auth/logout", { withCredentials: true })
       .then(() => {
-        window.location.href = BASE_URL;
+        window.location.href = import.meta.env.FRONTEND_URL;
       })
       .catch((err) => {
         console.error(err);
