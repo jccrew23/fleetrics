@@ -50,6 +50,7 @@ router.get(
   "/google",
   passport.authenticate("google", {
     scope: ["profile", "email", "https://www.googleapis.com/auth/calendar"],
+    prompt: "select_account", // Forces Google to show account selection
   })
 );
 
@@ -73,19 +74,31 @@ router.get("/me", (req, res) => {
 
 router.get("/logout", (req, res) => {
   req.logout((err) => {
-    if (err) return res.status(500).json({ error: "Logout failed" });
+    if (err) {
+      console.error("Logout error:", err);
+      return res.status(500).json({ error: "Logout failed" });
+    }
 
     if (req.session) {
-      req.session.destroy(() => {
+      req.session.destroy((destroyErr) => {
+        if (destroyErr) {
+          console.error("Session destroy error:", destroyErr);
+          return res.status(500).json({ error: "Session destruction failed" });
+        }
+        
+        // Clear the session cookie with the same settings used to create it
         res.clearCookie("connect.sid", {
           path: "/",
           httpOnly: true,
-          sameSite: "None",
-          secure: true,
+          sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
+          secure: process.env.NODE_ENV === 'production'
         });
+        
+        console.log("✅ User logged out successfully");
         return res.status(200).json({ message: "Logged out successfully" });
       });
     } else {
+      console.log("No session to destroy");
       return res.status(200).json({ message: "No session to destroy, logged out" });
     }
   });

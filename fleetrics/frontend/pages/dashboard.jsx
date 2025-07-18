@@ -52,15 +52,22 @@ function Dashboard() {
 
   // Handle logout
   const handleLogout = () => {
+    console.log("🚪 Logging out...");
     api
       .get("/api/auth/logout", { withCredentials: true })
-      .then(() => {
+      .then((response) => {
+        console.log("✅ Logout response:", response.data);
         setUser(null);
+        setAuthChecked(false); // Reset auth check
         console.log("User logged out successfully.");
+        // Force a page reload to clear any cached state
         window.location.reload();
       })
       .catch((err) => {
-        console.error(err);
+        console.error("❌ Logout error:", err);
+        // Still try to clear user state even if logout fails
+        setUser(null);
+        setAuthChecked(false);
       });
   };
 
