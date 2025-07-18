@@ -3,11 +3,11 @@ import dotenv from 'dotenv';
 import session from 'express-session';
 import passport from 'passport';
 import cors from 'cors';
-import fleetioRoutes from './backend/routes/fleetioRoutes.js';
-import googleAuthRouter from './backend/services/auth/googleAuthRouter.js';
-import calendarRouter from './backend/routes/calendarRouter.js';
-import webhookRoutes from './backend/routes/webhookRoutes.js';
-import connectDB from './backend/database/db.js';
+import fleetioRoutes from './routes/fleetioRoutes.js';
+import googleAuthRouter from './services/auth/googleAuthRouter.js';
+import calendarRouter from './routes/calendarRouter.js';
+import webhookRoutes from './routes/webhookRoutes.js';
+import connectDB from './database/db.js';
 
 
 
