@@ -30,7 +30,7 @@ useEffect(() => {
   // Fetch work orders
   useEffect(() => {
     api
-      .get("/api/fleetio/work_orders")
+      .get("/api/fleetio/work_orders", { withCredentials: true })
       .then((res) => {
         setWorkOrders(res.data.work_orders);
       })

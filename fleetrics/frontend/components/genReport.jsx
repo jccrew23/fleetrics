@@ -11,7 +11,7 @@ export default function GenReport() {
   //function to fetch vehicles for dropdown (if needed)
   useEffect(() => {
     api
-      .get("/api/fleetio/vehicles")
+      .get("/api/fleetio/vehicles", { withCredentials: true })
       .then((res) => {
         const records = res.data.vehicles?.records || [];
         setVehicles(records);
@@ -36,7 +36,7 @@ export default function GenReport() {
           endDate,
           vehicleId: selectedVehicles[0],
         },
-        {responseType: "blob"} // Expecting a file response
+        {responseType: "blob", withCredentials: true} // Expecting a file response
       );
 
       // Create a URL for the generated report
