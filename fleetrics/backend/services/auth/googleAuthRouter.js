@@ -59,7 +59,7 @@ router.get(
   (req, res) => {
     // Successful authentication, redirect home.
     console.log("✅ Google login successful:", req.user);
-    res.redirect(`${process.env.FRONTEND_URL}/dashboard`);
+    res.redirect(process.env.FRONTEND_URL);
   }
 );
 
