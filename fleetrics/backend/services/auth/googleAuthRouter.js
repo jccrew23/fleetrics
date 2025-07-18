@@ -17,6 +17,8 @@ passport.deserializeUser((user, done) => {
     done(null, user);
 });
 
+console.log("Google OAuth callback URL:", process.env.GOOGLE_OAUTH_REDIRECT_URI);
+
 passport.use(new GoogleStrategy({
     clientID: process.env.GOOGLE_OAUTH_CLIENT_ID,
     clientSecret: process.env.GOOGLE_OAUTH_CLIENT_SECRET,
@@ -40,7 +42,7 @@ passport.use(new GoogleStrategy({
         passport.authenticate('google', {failureRedirect: '/' }),
         (req, res) => {
             // Successful authentication, redirect home.
-            res.redirect('http://localhost:5173');
+            res.redirect(process.env.FRONTEND_URL || '/');
         }
     )
 
