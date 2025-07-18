@@ -14,6 +14,14 @@ import connectDB from './database/db.js';
 //configure environment variables
 dotenv.config();
 
+// Add after dotenv.config()
+console.log('NODE_ENV:', process.env.NODE_ENV);
+console.log('Cookie settings:', {
+    sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
+    secure: process.env.NODE_ENV === 'production'
+});
+
+
 // Connect to the database
 connectDB();
 
@@ -35,14 +43,17 @@ app.set('trust proxy', 1); // Trust first proxy for secure cookies
 
 // Middleware to start/store session and data
 app.use(session({ 
-    secret: 'your-secret', 
+    secret: process.env.SESSION_SECRET, 
     resave: false, 
     saveUninitialized: false ,
     cookie: {
-    sameSite: 'none',
-    secure: true,
+    sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
+    secure: process.env.NODE_ENV === 'production',
+    httpOnly: true,
+    maxAge: 24 * 60 * 60 * 1000 // 1 day
   }
 }));
+
 
 // Initialize Passport.js
 app.use(passport.initialize());
