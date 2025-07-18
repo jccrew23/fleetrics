@@ -20,7 +20,15 @@ useEffect(() => {
       setUser(res.data.user);
     })
     .catch((err) => {
-      console.error("User not authenticated.", err);
+      if (err.response && err.response.status === 401) {
+        // User is not authenticated
+        setUser(null);
+        console.log("User not authenticated, redirecting to login.");
+        window.location.href = BASE_URL + "/api/auth/google";
+      }
+      else {
+        console.error("Unexpected error:", err);
+      }
     })
     .finally(() => {
       setAuthChecked(true);

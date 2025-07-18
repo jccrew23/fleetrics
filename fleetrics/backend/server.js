@@ -17,6 +17,8 @@ dotenv.config();
 // Connect to the database
 connectDB();
 
+app.set('trust proxy', 1); // Trust first proxy for secure cookies
+
 // Create an Express application
 const app = express();
 
@@ -51,18 +53,16 @@ app.use('/webhooks', webhookRoutes);
 // Middleware to parse JSON
 app.use(express.json());
 
+// Google Authentication routes
+app.use('/api/auth', googleAuthRouter);
 
 // Fleetio API routes
 app.use('/api/fleetio', fleetioRoutes);
 
-// Google Authentication routes
-app.use('/api/auth', googleAuthRouter);
+
 
 //Calendar API routes
 app.use('/api/calendar', calendarRouter);
-
-
-
 
 const HOST = '0.0.0.0';
 

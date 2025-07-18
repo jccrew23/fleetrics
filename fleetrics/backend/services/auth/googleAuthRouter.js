@@ -58,7 +58,8 @@ router.get(
   passport.authenticate("google", { failureRedirect: "/" }),
   (req, res) => {
     // Successful authentication, redirect home.
-    res.redirect(process.env.FRONTEND_URL);
+    console.log("✅ Google login successful:", req.user);
+    res.redirect(`${process.env.FRONTEND_URL}/dashboard`);
   }
 );
 
