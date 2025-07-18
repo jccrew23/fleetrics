@@ -13,19 +13,19 @@ function Dashboard() {
   const [authChecked, setAuthChecked] = useState(false);
 
   // Fetch user data
-  useEffect(() => {
-    api
-      .get("/api/auth/me", { withCredentials: true })
-      .then((res) => {
-        setUser(res.data.user);
-        setAuthChecked(true);
-      })
-      .catch((err) => {
-        window.location.href = BASE_URL + "/api/auth/google";
-        console.error(err);
-        console.log("Failed to fetch user data. Please try again later.");
-      });
-  }, []);
+useEffect(() => {
+  api
+    .get("/api/auth/me", { withCredentials: true })
+    .then((res) => {
+      setUser(res.data.user);
+    })
+    .catch((err) => {
+      console.error("User not authenticated.", err);
+    })
+    .finally(() => {
+      setAuthChecked(true);
+    });
+}, []);
 
   // Fetch work orders
   useEffect(() => {
@@ -58,16 +58,16 @@ function Dashboard() {
     window.location.href = BASE_URL + "/api/auth/google";
   };
 
-  if (loading) return <p>Loading...</p>;
+if (!authChecked) return <p>Loading...</p>;
 
-  if (!user) {
-    return (
-      <div>
-        <h2>Please log in</h2>
-        <button onClick={handleLogin}>Login with Google</button>
-      </div>
-    );
-  }
+if (!user) {
+  return (
+    <div>
+      <h2>Please log in</h2>
+      <button onClick={handleLogin}>Login with Google</button>
+    </div>
+  );
+}
 
   return (
     <div>
