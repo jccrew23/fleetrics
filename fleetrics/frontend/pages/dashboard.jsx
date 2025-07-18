@@ -13,26 +13,28 @@ function Dashboard() {
   const [authChecked, setAuthChecked] = useState(false);
 
   // Fetch user data
-useEffect(() => {
-  api
-    .get("/api/auth/me", { withCredentials: true })
-    .then((res) => {
-      setUser(res.data.user);
-    })
-    .catch((err) => {
-      if (err.response && err.response.status === 401) {
-        // User is not authenticated
-        setUser(null);
-        console.log("User not authenticated, redirecting to login.");
-      }
-      else {
-        console.error("Unexpected error:", err);
-      }
-    })
-    .finally(() => {
-      setAuthChecked(true);
-    });
-}, []);
+  useEffect(() => {
+    console.log('Checking auth with:', `${BASE_URL}/api/auth/me`);
+    api
+      .get("/api/auth/me", { withCredentials: true })
+      .then((res) => {
+        console.log('Auth response:', res.data);
+        setUser(res.data.user);
+      })
+      .catch((err) => {
+        console.log('Auth error:', err.response?.status, err.response?.data);
+        if (err.response && err.response.status === 401) {
+          setUser(null);
+          console.log("User not authenticated, redirecting to login.");
+        }
+        else {
+          console.error("Unexpected error:", err);
+        }
+      })
+      .finally(() => {
+        setAuthChecked(true);
+      });
+  }, []);
 
   // Fetch work orders
   useEffect(() => {
@@ -67,16 +69,16 @@ useEffect(() => {
     window.location.href = BASE_URL + "/api/auth/google";
   };
 
-if (!authChecked) return <p>Loading...</p>;
+  if (!authChecked) return <p>Loading...</p>;
 
-if (!user) {
-  return (
-    <div>
-      <h2>Please log in</h2>
-      <button onClick={handleLogin}>Login with Google</button>
-    </div>
-  );
-}
+  if (!user) {
+    return (
+      <div>
+        <h2>Please log in</h2>
+        <button onClick={handleLogin}>Login with Google</button>
+      </div>
+    );
+  }
 
   return (
     <div>
