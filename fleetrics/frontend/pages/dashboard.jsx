@@ -24,7 +24,6 @@ useEffect(() => {
         // User is not authenticated
         setUser(null);
         console.log("User not authenticated, redirecting to login.");
-        window.location.href = BASE_URL + "/api/auth/google";
       }
       else {
         console.error("Unexpected error:", err);
