@@ -107,7 +107,7 @@ if (!user) {
           <GoogleSheetButton />
         </div>
 
-        {/* Work Orders */}
+        {/* Work Orders
         <div className="card p-4 shadow-sm mb-5">
           <h2 className="mb-3">Work Orders</h2>
           {loading ? (
@@ -117,7 +117,7 @@ if (!user) {
           ) : (
             <p>{workOrders.length} work orders found.</p>
           )}
-        </div>
+        </div> */}
       </div>
     </div>
   );
