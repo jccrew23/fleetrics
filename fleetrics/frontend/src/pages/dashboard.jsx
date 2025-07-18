@@ -1,28 +1,27 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import axios from "axios";
+import api from "../api";
 import GoogleCalEmbed from "../components/GoogleCalEmbed";
 import GenReport from "../components/genReport";
 import Header from "../components/header";
 import GoogleSheetButton from "../components/googleSheetButton";
+import { BASE_URL } from "../config";
 
 function Dashboard() {
   const [workOrders, setWorkOrders] = useState([]);
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [authChecked, setAuthChecked] = useState(false);
-  const navigate = useNavigate();
 
   // Fetch user data
   useEffect(() => {
-    axios
-      .get("http://localhost:5000/api/auth/me", { withCredentials: true })
+    api
+      .get("/api/auth/me", { withCredentials: true })
       .then((res) => {
         setUser(res.data.user);
         setAuthChecked(true);
       })
       .catch((err) => {
-        navigate("http://localhost:5000/api/auth/google");
+        window.location.href = BASE_URL + "/api/auth/google";
         console.error(err);
         console.log("Failed to fetch user data. Please try again later.");
       });
@@ -30,7 +29,7 @@ function Dashboard() {
 
   // Fetch work orders
   useEffect(() => {
-    axios
+    api
       .get("/api/fleetio/work_orders")
       .then((res) => {
         setWorkOrders(res.data.work_orders);
@@ -44,10 +43,10 @@ function Dashboard() {
 
   // Handle logout
   const handleLogout = () => {
-    axios
-      .get("http://localhost:5000/api/auth/logout", { withCredentials: true })
+    api
+      .get("/api/auth/logout", { withCredentials: true })
       .then(() => {
-        window.location.href = "http://localhost:5173";
+        window.location.href = BASE_URL;
       })
       .catch((err) => {
         console.error(err);
@@ -56,10 +55,10 @@ function Dashboard() {
 
   // Handle Login
   const handleLogin = () => {
-    window.location.href = "http://localhost:5000/api/auth/google";
+    window.location.href = BASE_URL + "/api/auth/google";
   };
 
-    if (loading) return <p>Loading...</p>;
+  if (loading) return <p>Loading...</p>;
 
   if (!user) {
     return (
@@ -93,7 +92,7 @@ function Dashboard() {
       </div>
 
       {/* Sidebar */}
-      <div style={{ flex: 1, minWidth: '250px' }}>
+      <div style={{ flex: 1, minWidth: "250px" }}>
         {/* Google Sheet Button */}
         <div className="mb-4">
           <GoogleSheetButton />

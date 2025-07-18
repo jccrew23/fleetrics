@@ -1,6 +1,6 @@
 import React from 'react';
 import { useEffect, useState } from "react";
-import axios from "axios";
+import api from '../api';
 
 function Calendar() {
     const [events, setEvents] = useState([]);
@@ -10,7 +10,7 @@ function Calendar() {
     useEffect(() => {
         const fetchEvents = async () => {
             try {
-                const response = await axios.get('http://localhost:5000/api/calendar/events', { withCredentials: true });
+                const response = await api.get('/api/calendar/events', { withCredentials: true });
                 setEvents(response.data.events || []);
             } catch (err) {
                 console.error('Error fetching events:', err);

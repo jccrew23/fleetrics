@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
-
+import api from '../api';
 export default function GenReport() {
   const [reportType, setReportType] = useState("work_orders");
   const [startDate, setStartDate] = useState("");
@@ -11,7 +10,7 @@ export default function GenReport() {
 
   //function to fetch vehicles for dropdown (if needed)
   useEffect(() => {
-    axios
+    api
       .get("/api/fleetio/vehicles")
       .then((res) => {
         const records = res.data.vehicles?.records || [];
@@ -29,7 +28,7 @@ export default function GenReport() {
     e.preventDefault();
 
     try {
-      const response = await axios.post(
+      const response = await api.post(
         "/api/fleetio/reports",
         {
           reportType,
