@@ -24,8 +24,8 @@ const app = express();
 
 // Middleware to enable CORS
 app.use(cors({
-  origin: process.env.FRONTEND_URL, 
-  credentials: true,                 
+  origin: "https://fleetrics-frontend.onrender.com",
+  credentials: true,
 }));
 
 // middleware to trust the first proxy

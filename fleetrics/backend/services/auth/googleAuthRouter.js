@@ -75,17 +75,21 @@ router.get("/logout", (req, res) => {
   req.logout((err) => {
     if (err) return res.status(500).json({ error: "Logout failed" });
 
-    req.session.destroy(() => {
-      res.clearCookie("connect.sid", {
-        path: "/",
-        httpOnly: true,
-        sameSite: "None",
-        secure: true,
+    if (req.session) {
+      req.session.destroy(() => {
+        res.clearCookie("connect.sid", {
+          path: "/",
+          httpOnly: true,
+          sameSite: "None",
+          secure: true,
+        });
+        return res.status(200).json({ message: "Logged out successfully" });
       });
-
-      res.redirect(`${process.env.FRONTEND_URL}/`); // redirect to frontend homepage
-    });
+    } else {
+      return res.status(200).json({ message: "No session to destroy, logged out" });
+    }
   });
 });
+
 
 export default router;
