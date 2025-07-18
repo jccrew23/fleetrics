@@ -17,8 +17,6 @@ dotenv.config();
 // Connect to the database
 connectDB();
 
-app.set('trust proxy', 1); // Trust first proxy for secure cookies
-
 // Create an Express application
 const app = express();
 
@@ -29,6 +27,11 @@ app.use(cors({
   origin: process.env.FRONTEND_URL, 
   credentials: true,                 
 }));
+
+// middleware to trust the first proxy
+// This is important for secure cookies when using HTTPS
+app.set('trust proxy', 1); // Trust first proxy for secure cookies
+
 
 // Middleware to start/store session and data
 app.use(session({ 
