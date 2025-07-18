@@ -54,6 +54,8 @@ useEffect(() => {
     api
       .get("/api/auth/logout", { withCredentials: true })
       .then(() => {
+        setUser(null);
+        console.log("User logged out successfully.");
         window.location.reload();
       })
       .catch((err) => {

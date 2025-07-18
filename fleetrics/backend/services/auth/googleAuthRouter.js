@@ -73,12 +73,17 @@ router.get("/me", (req, res) => {
 
 router.get("/logout", (req, res) => {
   req.logout((err) => {
-    if (err) {
-      return res.status(500).json({ error: "Failed to log out" });
-    }
+    if (err) return res.status(500).json({ error: "Logout failed" });
+
     req.session.destroy(() => {
-      res.clearCookie("connect.sid");
-      res.sendStatus(200);
+      res.clearCookie("connect.sid", {
+        path: "/",
+        httpOnly: true,
+        sameSite: "None",
+        secure: true,
+      });
+
+      res.redirect(`${process.env.FRONTEND_URL}/`); // redirect to frontend homepage
     });
   });
 });
